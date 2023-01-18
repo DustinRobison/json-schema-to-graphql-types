@@ -3,7 +3,7 @@ const Ajv = require('ajv');
 const { INPUT_SUFFIX, newContext, convert, UnknownTypeReference, getConvertEnumFromGraphQLCode } = require('../src/converter');
 const {
   parse, execute, buildSchema, printSchema,
-  GraphQLSchema, GraphQLObjectType, introspectionQuery
+  GraphQLSchema, GraphQLObjectType, getIntrospectionQuery
 } = require('graphql');
 const tmp = require('tmp-promise');
 const fs = require('fs-extra');
@@ -50,6 +50,7 @@ function makeSchemaForType (output, input) {
 }
 
 async function compareSchemas (test, schema, expectedSchema) {
+  const introspectionQuery = getIntrospectionQuery();
   const introspection = await execute({
     schema,
     document: parse(introspectionQuery)
